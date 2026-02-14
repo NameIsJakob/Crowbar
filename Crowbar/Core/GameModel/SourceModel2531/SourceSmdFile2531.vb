@@ -1194,7 +1194,7 @@ Public Class SourceSmdFile2531
 	End Sub
 
 	Private Sub CalculatePhysicsPointNormals(ByRef ledgeTreeNode As SourcePhyFileCompactLedgeTreeNode, ByRef points As List(Of SourceVector), ByRef normals As List(Of SourceVector))
-		If ledgeTreeNode.offsetCompactLedge <> 0 Then
+		If ledgeTreeNode.offsetRightNode = 0 Then
 			For Each triangle As SourcePhyFileCompactTriangle In ledgeTreeNode.theCompactLedge.theTriangles
 				Dim vertices() As SourceVector = {
 					points(triangle.edges(0).startPointIndex),
@@ -1225,7 +1225,7 @@ Public Class SourceSmdFile2531
 	End Sub
 
 	Private Sub WriteLedgeTreeNode(ByRef ledgeTreeNode As SourcePhyFileCompactLedgeTreeNode, ByVal boneIndex As Integer, ByRef points As List(Of SourceVector), ByRef normals As List(Of SourceVector))
-		If ledgeTreeNode.offsetCompactLedge <> 0 Then
+		If ledgeTreeNode.offsetRightNode = 0 Then
 			For Each triangle As SourcePhyFileCompactTriangle In ledgeTreeNode.theCompactLedge.theTriangles
 				Me.theOutputFileStreamWriter.WriteLine("phy")
 				For Each edge As SourcePhyFileCompactEdge In triangle.edges
