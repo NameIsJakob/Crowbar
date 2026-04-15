@@ -128,7 +128,7 @@ Public Class ViewUserControl
 		openFileWdw.Multiselect = False
 		openFileWdw.ValidateNames = True
 
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 

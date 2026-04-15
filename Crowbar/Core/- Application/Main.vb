@@ -32,15 +32,13 @@ Module Main
 		'NOTE: Needed for keeping Label and Button text rendering correctly.
 		Application.SetCompatibleTextRenderingDefault(False)
 
-		AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf ResolveAssemblies
-
 		TheApp = New App()
 		'Try
 		TheApp.Init()
 		If TheApp.Settings.AppIsSingleInstance Then
 			SingleInstanceApplication.Run(New MainForm(), AddressOf StartupNextInstanceEventHandler)
 		Else
-			Windows.Forms.Application.Run(MainForm)
+			Application.Run(MainForm)
 		End If
 		'Catch e As Exception
 		'	MsgBox(e.Message)
@@ -59,22 +57,6 @@ Module Main
 		e.MainForm.Activate()
 		CType(e.MainForm, MainForm).Startup(e.CommandLine)
 	End Sub
-
-	Private Function ResolveAssemblies(sender As Object, e As System.ResolveEventArgs) As Reflection.Assembly
-		Dim desiredAssembly As Reflection.AssemblyName = New Reflection.AssemblyName(e.Name)
-		'If desiredAssembly.Name = "SevenZipSharp" Then
-		'	Return Reflection.Assembly.Load(My.Resources.SevenZipSharp)
-		'ElseIf desiredAssembly.Name = "Steamworks.NET" Then
-		'	Return Reflection.Assembly.Load(My.Resources.Steamworks_NET)
-		'Else
-		'	Return Nothing
-		'End If
-		If desiredAssembly.Name = "Steamworks.NET" Then
-			Return Reflection.Assembly.Load(My.Resources.Steamworks_NET)
-		Else
-			Return Nothing
-		End If
-	End Function
 
 	'Public TheJob As WindowsJob
 	Public TheApp As App

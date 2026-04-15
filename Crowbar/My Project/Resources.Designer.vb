@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -166,16 +166,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("CancelSearch", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
-        Friend ReadOnly Property crowbar_icon() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("crowbar_icon", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -421,26 +411,6 @@ Namespace My.Resources
         Friend ReadOnly Property SevenZr() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("SevenZr", resourceCulture)
-                Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Byte[].
-        '''</summary>
-        Friend ReadOnly Property steam_api() As Byte()
-            Get
-                Dim obj As Object = ResourceManager.GetObject("steam_api", resourceCulture)
-                Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Byte[].
-        '''</summary>
-        Friend ReadOnly Property Steamworks_NET() As Byte()
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Steamworks_NET", resourceCulture)
                 Return CType(obj,Byte())
             End Get
         End Property

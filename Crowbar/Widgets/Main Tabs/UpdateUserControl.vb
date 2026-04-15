@@ -257,7 +257,7 @@ Public Class UpdateUserControl
 		outputPathWdw.Multiselect = False
 		outputPathWdw.ValidateNames = False
 
-		If outputPathWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If outputPathWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -305,7 +305,7 @@ Public Class UpdateUserControl
 		outputPathWdw.Multiselect = False
 		outputPathWdw.ValidateNames = False
 
-		If outputPathWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If outputPathWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 

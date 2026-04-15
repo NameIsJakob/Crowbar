@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
-Imports System.Web.Script.Serialization
+Imports System.Text.Json
 Imports Steamworks
 
 Public Class GarrysModSteamAppInfo
@@ -247,23 +247,22 @@ Public Class GarrysModSteamAppInfo
 		fileStream = File.CreateText(addonJsonPathFileName)
 		fileStream.AutoFlush = True
 		Try
-			Dim jss As JavaScriptSerializer = New JavaScriptSerializer()
 			If File.Exists(addonJsonPathFileName) Then
 				fileStream.WriteLine("{")
-				fileStream.WriteLine(vbTab + """title"": " + jss.Serialize(itemTitle) + ",")
+				fileStream.WriteLine(vbTab + """title"": " + JsonSerializer.Serialize(itemTitle) + ",")
 				If itemTags.Count > 1 Then
-					fileStream.WriteLine(vbTab + """type"": " + jss.Serialize(itemTags(0)) + ",")
+					fileStream.WriteLine(vbTab + """type"": " + JsonSerializer.Serialize(itemTags(0)) + ",")
 					fileStream.WriteLine(vbTab + """tags"": ")
 					fileStream.WriteLine(vbTab + "[")
 					If itemTags.Count > 2 Then
-						fileStream.WriteLine(vbTab + vbTab + jss.Serialize(itemTags(1)) + ",")
-						fileStream.WriteLine(vbTab + vbTab + jss.Serialize(itemTags(2)))
+						fileStream.WriteLine(vbTab + vbTab + JsonSerializer.Serialize(itemTags(1)) + ",")
+						fileStream.WriteLine(vbTab + vbTab + JsonSerializer.Serialize(itemTags(2)))
 					Else
-						fileStream.WriteLine(vbTab + vbTab + jss.Serialize(itemTags(1)))
+						fileStream.WriteLine(vbTab + vbTab + JsonSerializer.Serialize(itemTags(1)))
 					End If
 					fileStream.WriteLine(vbTab + "]")
 				Else
-					fileStream.WriteLine(vbTab + """type"": " + jss.Serialize(itemTags(0)))
+					fileStream.WriteLine(vbTab + """type"": " + JsonSerializer.Serialize(itemTags(0)))
 				End If
 				fileStream.WriteLine("}")
 				fileStream.Flush()
@@ -302,8 +301,7 @@ Public Class GarrysModSteamAppInfo
 
 			Try
 				If addonFileContents IsNot Nothing AndAlso addonFileContents <> "" Then
-					Dim jss As JavaScriptSerializer = New JavaScriptSerializer()
-					Dim addon As GarrysMod_AddonJson = jss.Deserialize(Of GarrysMod_AddonJson)(addonFileContents)
+					Dim addon As GarrysMod_AddonJson = JsonSerializer.Deserialize(Of GarrysMod_AddonJson)(addonFileContents)
 
 					itemTitle = addon.title
 					itemTags.Clear()

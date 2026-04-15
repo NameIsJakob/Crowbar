@@ -58,7 +58,7 @@ Public Class BackgroundSteamPipe
 
 		If inputInfo.AppID = 0 Then
 			'NOTE: Use appID for "Source SDK" when item's appID is unknown.
-			TheApp.SetSteamAppId(211)
+			TheApp.SetSteamAppId(CUInt(211))
 
 			Dim steamPipeToGetAppID As New SteamPipe()
 			Me.theActiveSteamPipes.Add(steamPipeToGetAppID)

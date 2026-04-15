@@ -214,7 +214,7 @@ Public Class UnpackUserControl
 		openFileWdw.Multiselect = False
 		openFileWdw.ValidateNames = True
 
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -290,7 +290,7 @@ Public Class UnpackUserControl
 		Dim treeView As TreeView
 		Dim clickedNode As TreeNode
 
-		treeView = CType(sender, Windows.Forms.TreeView)
+		treeView = CType(sender, TreeView)
 		clickedNode = treeView.GetNodeAt(e.X, e.Y)
 		If clickedNode Is Nothing Then
 			'clickedNode = Me.PackageTreeView.Nodes(0)
@@ -854,7 +854,7 @@ Public Class UnpackUserControl
 			outputPathWdw.Multiselect = False
 			outputPathWdw.ValidateNames = False
 
-			If outputPathWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+			If outputPathWdw.ShowDialog() = DialogResult.OK Then
 				' Allow dialog window to completely disappear.
 				Application.DoEvents()
 

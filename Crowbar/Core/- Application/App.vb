@@ -1,6 +1,7 @@
 Imports System.Collections.ObjectModel
 Imports System.Globalization
 Imports System.IO
+Imports System.Reflection
 Imports System.Text
 
 Public Class App
@@ -174,12 +175,14 @@ Public Class App
 	End Function
 
 	Public Sub WriteRequiredFiles()
-		Dim steamAPIDLLPathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.theSteamAPIDLLFileName)
-		Me.WriteResourceToFileIfDifferent(My.Resources.steam_api, steamAPIDLLPathFileName)
+		Dim theSteamAPIDLLFileName = If(Environment.Is64BitProcess, "steam_api64.dll", "steam_api.dll")
+		Dim steamAPIDLLPathFileName = Path.Combine(Me.GetCustomDataPath(), theSteamAPIDLLFileName)
+		Using stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Crowbar." + theSteamAPIDLLFileName)
+			Dim steam_api As New MemoryStream()
+			stream.CopyTo(steam_api)
+			Me.WriteResourceToFileIfDifferent(steam_api.ToArray(), steamAPIDLLPathFileName)
+		End Using
 
-		'NOTE: Although Crowbar itself does not need the DLL file extracted, CrowbarSteamPipe needs it extracted.
-		Dim steamworksDotNetPathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.theSteamworksDotNetDLLFileName)
-		Me.WriteResourceToFileIfDifferent(My.Resources.Steamworks_NET, steamworksDotNetPathFileName)
 
 		Dim crowbarSteamPipePathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.CrowbarSteamPipeFileName)
 		Me.WriteResourceToFileIfDifferent(My.Resources.CrowbarSteamPipe, crowbarSteamPipePathFileName)
@@ -456,8 +459,6 @@ Public Class App
 	' Location of the exe.
 	Private theAppPath As String
 
-	Private Const theSteamAPIDLLFileName As String = "steam_api.dll"
-	Private Const theSteamworksDotNetDLLFileName As String = "Steamworks.NET.dll"
 	Private Const theSevenZrEXEFileName As String = "7zr.exe"
 	Private Const theCrowbarLauncherEXEFileName As String = "CrowbarLauncher.exe"
 	Private Const theLzmaExeFileName As String = "lzma.exe"

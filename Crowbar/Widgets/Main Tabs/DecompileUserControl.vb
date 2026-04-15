@@ -175,7 +175,7 @@ Public Class DecompileUserControl
 		openFileWdw.Multiselect = False
 		openFileWdw.ValidateNames = True
 
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -447,7 +447,7 @@ Public Class DecompileUserControl
 			outputPathWdw.Multiselect = False
 			outputPathWdw.ValidateNames = False
 
-			If outputPathWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+			If outputPathWdw.ShowDialog() = DialogResult.OK Then
 				' Allow dialog window to completely disappear.
 				Application.DoEvents()
 

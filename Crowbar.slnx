@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Crowbar/Crowbar.vbproj">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="CrowbarLauncher/CrowbarLauncher.vbproj" Id="bc63c5f7-e420-4183-aa32-17dce0cdad91">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="CrowbarSteamPipe/CrowbarSteamPipe.vbproj" Id="5a3fe6b1-7d4e-42c6-a3c9-c4b118584cd5">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+</Solution>

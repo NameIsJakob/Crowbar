@@ -157,7 +157,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.ValidateNames = True
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(Me.theSelectedGameSetup.GamePathFileName)
 		openFileWdw.FileName = Path.GetFileName(Me.theSelectedGameSetup.GamePathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -179,7 +179,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.ValidateNames = True
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(Me.theSelectedGameSetup.GameAppPathFileName)
 		openFileWdw.FileName = Path.GetFileName(Me.theSelectedGameSetup.GameAppPathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -207,7 +207,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.ValidateNames = True
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(Me.theSelectedGameSetup.CompilerPathFileName)
 		openFileWdw.FileName = Path.GetFileName(Me.theSelectedGameSetup.CompilerPathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -231,7 +231,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.ValidateNames = True
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(Me.theSelectedGameSetup.ViewerPathFileName)
 		openFileWdw.FileName = Path.GetFileName(Me.theSelectedGameSetup.ViewerPathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -255,7 +255,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.ValidateNames = True
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(Me.theSelectedGameSetup.MappingToolPathFileName)
 		openFileWdw.FileName = Path.GetFileName(Me.theSelectedGameSetup.MappingToolPathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -279,7 +279,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.ValidateNames = True
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(Me.theSelectedGameSetup.PackerPathFileName)
 		openFileWdw.FileName = Path.GetFileName(Me.theSelectedGameSetup.PackerPathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -325,7 +325,7 @@ Public Class SetUpGamesUserControl
 		openFileWdw.Filter = "Steam Executable File|steam.exe|All Files (*.*)|*.*"
 		openFileWdw.InitialDirectory = FileManager.GetLongestExtantPath(TheApp.Settings.SteamAppPathFileName)
 		openFileWdw.FileName = Path.GetFileName(TheApp.Settings.SteamAppPathFileName)
-		If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+		If openFileWdw.ShowDialog() = DialogResult.OK Then
 			' Allow dialog window to completely disappear.
 			Application.DoEvents()
 
@@ -350,7 +350,7 @@ Public Class SetUpGamesUserControl
 			'	openFileWdw.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
 			'End If
 			openFileWdw.FileName = "[Folder Selection]"
-			If openFileWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+			If openFileWdw.ShowDialog() = DialogResult.OK Then
 				' Allow dialog window to completely disappear.
 				Application.DoEvents()
 

@@ -1,4 +1,4 @@
-﻿Imports System.IO
+Imports System.IO
 Imports System.IO.Pipes
 Imports System.Text
 Imports System.Threading
@@ -8,8 +8,9 @@ Public Module CrowbarSteamPipe
 
 	Public Sub Main()
 		Dim pipeNameSuffix As String = ""
-		If My.Application.CommandLineArgs.Count > 0 Then
-			pipeNameSuffix = My.Application.CommandLineArgs(0)
+		Dim commandLineArgs = Environment.GetCommandLineArgs()
+		If commandLineArgs.Count() > 1 Then
+			pipeNameSuffix = commandLineArgs(1)
 		End If
 		Dim pipeClient As New NamedPipeClientStream(".", "CrowbarSteamPipe" + pipeNameSuffix, PipeDirection.InOut, PipeOptions.WriteThrough)
 
@@ -131,7 +132,7 @@ Public Module CrowbarSteamPipe
 			'For debugging, keep console open until Enter Is pressed.
 			Console.ReadLine()
 #End If
-        End Try
+		End Try
 	End Sub
 
 #Region "Init and Free"
@@ -1341,26 +1342,26 @@ Public Module CrowbarSteamPipe
 		If status = EItemUpdateStatus.k_EItemUpdateStatusPreparingConfig Then
 			'           Console.WriteLine("Preparing config")
 			sw.WriteLine("Preparing config")
-        ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusPreparingContent Then
+		ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusPreparingContent Then
 			'           Console.WriteLine("Preparing content")
 			sw.WriteLine("Preparing content")
-        ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusUploadingContent Then
+		ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusUploadingContent Then
 			'           Console.WriteLine("Uploading content")
 			sw.WriteLine("Uploading content")
-            If totalUploadedByteCount > 0 AndAlso uploadedByteCount = totalUploadedByteCount Then
-                theItemIsUploading = False
-            End If
-        ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusUploadingPreviewFile Then
+			If totalUploadedByteCount > 0 AndAlso uploadedByteCount = totalUploadedByteCount Then
+				theItemIsUploading = False
+			End If
+		ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusUploadingPreviewFile Then
 			'           Console.WriteLine("Uploading preview")
 			sw.WriteLine("Uploading preview")
-        ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusCommittingChanges Then
+		ElseIf status = EItemUpdateStatus.k_EItemUpdateStatusCommittingChanges Then
 			'           Console.WriteLine("Committing changes")
 			sw.WriteLine("Committing changes")
-        Else
+		Else
 			'           Console.WriteLine("invalid")
 			sw.WriteLine("invalid")
-            theItemIsUploading = False
-        End If
+			theItemIsUploading = False
+		End If
 		sw.WriteLine(uploadedByteCount)
 		sw.WriteLine(totalUploadedByteCount)
 	End Sub

@@ -5,8 +5,8 @@ Imports System.IO.Pipes
 Imports System.Linq
 Imports System.Net
 Imports System.Text
+Imports System.Text.Json
 Imports System.Web
-Imports System.Web.Script.Serialization
 
 Public Class DownloadUserControl
 
@@ -430,7 +430,7 @@ Public Class DownloadUserControl
 			outputPathWdw.Multiselect = False
 			outputPathWdw.ValidateNames = False
 
-			If outputPathWdw.ShowDialog() = Windows.Forms.DialogResult.OK Then
+			If outputPathWdw.ShowDialog() = DialogResult.OK Then
 				' Allow dialog window to completely disappear.
 				Application.DoEvents()
 
@@ -611,8 +611,7 @@ Public Class DownloadUserControl
 			reader = New StreamReader(dataStream)
 			Dim responseFromServer As String = reader.ReadToEnd()
 
-			Dim jss As JavaScriptSerializer = New JavaScriptSerializer()
-			Dim root As SteamRemoteStorage_PublishedFileDetails_Json = jss.Deserialize(Of SteamRemoteStorage_PublishedFileDetails_Json)(responseFromServer)
+			Dim root As SteamRemoteStorage_PublishedFileDetails_Json = JsonSerializer.Deserialize(Of SteamRemoteStorage_PublishedFileDetails_Json)(responseFromServer)
 			Dim file_url As String = root.response.publishedfiledetails(0).file_url
 			If file_url IsNot Nothing AndAlso file_url <> "" Then
 				itemLink = file_url

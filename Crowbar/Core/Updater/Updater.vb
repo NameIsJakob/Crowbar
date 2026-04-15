@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Net
-Imports System.Web.Script.Serialization
+Imports System.Text.Json
 Imports System.Xml
 
 Public Class Updater
@@ -85,8 +85,7 @@ Public Class Updater
 					reader = New StreamReader(dataStream)
 					Dim responseFromServer As String = reader.ReadToEnd()
 
-					Dim jss As JavaScriptSerializer = New JavaScriptSerializer()
-					Dim root As Dictionary(Of String, Object) = jss.Deserialize(Of Dictionary(Of String, Object))(responseFromServer)
+					Dim root As Dictionary(Of String, Object) = JsonSerializer.Deserialize(Of Dictionary(Of String, Object))(responseFromServer)
 
 					Dim appVersionTag As String = CType(root("tag_name"), String)
 					If appVersionTag <> "" Then

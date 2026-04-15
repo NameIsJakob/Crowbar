@@ -64,11 +64,11 @@ Public Class AboutUserControl
 		Dim aLinkLabel As LinkLabel
 		aLinkLabel = CType(sender, LinkLabel)
 
-		If e.Button = Windows.Forms.MouseButtons.Left Then
+		If e.Button = MouseButtons.Left Then
 			aLinkLabel.LinkVisited = True
 			Dim target As String = CType(e.Link.LinkData, String)
 			System.Diagnostics.Process.Start(target)
-		ElseIf e.Button = Windows.Forms.MouseButtons.Right Then
+		ElseIf e.Button = MouseButtons.Right Then
 			'TODO: Show context menu with: Copy Link, Copy Text
 		End If
 	End Sub
