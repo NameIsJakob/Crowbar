@@ -187,9 +187,6 @@ Public Class App
 		Dim crowbarSteamPipePathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.CrowbarSteamPipeFileName)
 		Me.WriteResourceToFileIfDifferent(My.Resources.CrowbarSteamPipe, crowbarSteamPipePathFileName)
 
-		Me.LzmaExePathFileName = Path.Combine(Me.GetCustomDataPath(), App.theLzmaExeFileName)
-		Me.WriteResourceToFileIfDifferent(My.Resources.lzma, Me.LzmaExePathFileName)
-
 		Dim lzhamAPIDLLPathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.theLzhamDLLFileName)
 		Me.WriteResourceToFileIfDifferent(My.Resources.lzham_x86, lzhamAPIDLLPathFileName)
 
@@ -461,7 +458,6 @@ Public Class App
 
 	Private Const theSevenZrEXEFileName As String = "7zr.exe"
 	Private Const theCrowbarLauncherEXEFileName As String = "CrowbarLauncher.exe"
-	Private Const theLzmaExeFileName As String = "lzma.exe"
 	Private Const theLzhamDLLFileName As String = "lzham_x86.dll"
 	Public SevenZrExePathFileName As String
 	Public CrowbarLauncherExePathFileName As String

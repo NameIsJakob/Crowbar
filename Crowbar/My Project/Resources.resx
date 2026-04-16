@@ -215,9 +215,6 @@
   <data name="Link_SteamSubscriberAgreement" xml:space="preserve">
     <value>https://steamcommunity.com/sharedfiles/workshoplegalagreement</value>
   </data>
-  <data name="lzma" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lzma.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="Crowbar_Settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Crowbar Settings.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
