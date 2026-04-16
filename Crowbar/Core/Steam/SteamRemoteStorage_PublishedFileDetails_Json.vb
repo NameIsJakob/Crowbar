@@ -1,4 +1,6 @@
-﻿Public Class SteamRemoteStorage_PublishedFileDetails_Json
+﻿Imports System.Text.Json.Serialization
+
+Public Class SteamRemoteStorage_PublishedFileDetails_Json
 
 	Public Property response As SteamRemoteStorage_PublishedFileDetails_Response
 
@@ -15,6 +17,7 @@
 		Public Property creator_app_id As Integer
 		Public Property consumer_app_id As Integer
 		Public Property filename As String
+		<JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)>
 		Public Property file_size As Integer
 		Public Property file_url As String
 		Public Property hcontent_file As String

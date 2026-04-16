@@ -85,9 +85,9 @@ Public Class Updater
 					reader = New StreamReader(dataStream)
 					Dim responseFromServer As String = reader.ReadToEnd()
 
-					Dim root As Dictionary(Of String, Object) = JsonSerializer.Deserialize(Of Dictionary(Of String, Object))(responseFromServer)
+					Dim root As Dictionary(Of String, JsonElement) = JsonSerializer.Deserialize(Of Dictionary(Of String, JsonElement))(responseFromServer)
 
-					Dim appVersionTag As String = CType(root("tag_name"), String)
+					Dim appVersionTag As String = root("tag_name").GetString()
 					If appVersionTag <> "" Then
 						If appVersionTag(0) = "v" Then
 							appVersionTag = appVersionTag.Remove(0, 1)
@@ -100,23 +100,20 @@ Public Class Updater
 						'Dim appVersionIsOlder As Boolean = appVersion < My.Application.Info.Version
 						'Dim appVersionIsEqual As Boolean = appVersion = My.Application.Info.Version
 
-						bw.ReportProgress(0, "Crowbar " + appVersionTag + vbCrLf + CType(root("body"), String))
+						bw.ReportProgress(0, "Crowbar " + appVersionTag + vbCrLf + root("body").GetString())
 					Else
 						Me.theAppVersion = Nothing
 					End If
 
 					'NOTE: File name needs to be in this form: "Crowbar_" + whatever; usually date + "_" + app version (e.g. 0.68) + ".7z"
 					Me.theRemoteFileLink = ""
-					Dim assets As ArrayList = CType(root("assets"), ArrayList)
-					Dim asset As Dictionary(Of String, Object)
-					Dim assetName As String
-					For assetIndex As Integer = 0 To assets.Count - 1
-						asset = CType(assets(assetIndex), Dictionary(Of String, Object))
-						assetName = CType(asset("name"), String)
+					Dim assets As JsonElement.ArrayEnumerator = root("assets").EnumerateArray()
+					For Each asset In assets
+						Dim assetName As String = asset.GetProperty("name").GetString()
 						If assetName.StartsWith("Crowbar_") AndAlso assetName.EndsWith("_" + appVersionTag + ".7z") Then
-							Me.theRemoteFileLink = CType(asset("browser_download_url"), String)
-							Me.theLocalFileName = CType(asset("name"), String)
-							fileSize = CType(asset("size"), ULong)
+							Me.theRemoteFileLink = asset.GetProperty("browser_download_url").GetString()
+							Me.theLocalFileName = assetName
+							fileSize = asset.GetProperty("size").GetUInt64()
 							Exit For
 						End If
 					Next
