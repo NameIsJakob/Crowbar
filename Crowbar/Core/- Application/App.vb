@@ -205,23 +205,11 @@ Public Class App
 	End Sub
 
 	Public Sub WriteUpdaterFiles()
-		Me.SevenZrExePathFileName = Path.Combine(Me.GetCustomDataPath(), App.theSevenZrEXEFileName)
-		Me.WriteResourceToFileIfDifferent(My.Resources.SevenZr, Me.SevenZrExePathFileName)
-
 		Me.CrowbarLauncherExePathFileName = Path.Combine(Me.GetCustomDataPath(), App.theCrowbarLauncherEXEFileName)
 		Me.WriteResourceToFileIfDifferent(My.Resources.CrowbarLauncher, Me.CrowbarLauncherExePathFileName)
 	End Sub
 
 	Public Sub DeleteUpdaterFiles()
-		Me.SevenZrExePathFileName = Path.Combine(Me.GetCustomDataPath(), App.theSevenZrEXEFileName)
-		Try
-			If File.Exists(Me.SevenZrExePathFileName) Then
-				File.Delete(Me.SevenZrExePathFileName)
-			End If
-		Catch ex As Exception
-			Dim debug As Integer = 4242
-		End Try
-
 		Me.CrowbarLauncherExePathFileName = Path.Combine(Me.GetCustomDataPath(), App.theCrowbarLauncherEXEFileName)
 		Try
 			If File.Exists(Me.CrowbarLauncherExePathFileName) Then
@@ -456,12 +444,9 @@ Public Class App
 	' Location of the exe.
 	Private theAppPath As String
 
-	Private Const theSevenZrEXEFileName As String = "7zr.exe"
 	Private Const theCrowbarLauncherEXEFileName As String = "CrowbarLauncher.exe"
 	Private Const theLzhamDLLFileName As String = "lzham_x86.dll"
-	Public SevenZrExePathFileName As String
 	Public CrowbarLauncherExePathFileName As String
-	Public LzmaExePathFileName As String
 	Public SteamAppInfos As List(Of SteamAppInfoBase)
 
 	Private Const PreviewsRelativePath As String = "previews"

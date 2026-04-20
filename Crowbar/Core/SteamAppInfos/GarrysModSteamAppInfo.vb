@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Text.Json
+Imports SevenZipExtractor
 Imports Steamworks
 
 Public Class GarrysModSteamAppInfo
@@ -57,17 +58,9 @@ Public Class GarrysModSteamAppInfo
 
 			Try
 				Using compressedFile = File.OpenRead(processedGivenPathFileName),
-					uncompressedFile = File.OpenWrite(processedPathFileName)
-
-					Dim properties(4) As Byte
-					compressedFile.ReadExactly(properties)
-
-					Dim uncompressedSize(7) As Byte
-					compressedFile.ReadExactly(uncompressedSize)
-
-					Dim lzmaDecoder As New SevenZip.Compression.LZMA.Decoder()
-					lzmaDecoder.SetDecoderProperties(properties)
-					lzmaDecoder.Code(compressedFile, uncompressedFile, compressedFile.Length - compressedFile.Position, BitConverter.ToInt64(uncompressedSize), Nothing)
+					  uncompressedFile = File.OpenWrite(processedPathFileName),
+					  archiveFile = New ArchiveFile(compressedFile, format:=SevenZipFormat.Lzma)
+					archiveFile.Entries.First().Extract(uncompressedFile)
 				End Using
 			Catch ex As Exception
 				bw.ReportProgress(0, "Crowbar tried to decompress the file """ + processedGivenPathFileName + """ to """ + processedPathFileName + """ but failed due to: " + ex.Message + vbCrLf)

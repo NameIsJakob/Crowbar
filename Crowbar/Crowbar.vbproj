@@ -111,7 +111,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LZMA-SDK" Version="22.1.1" />
+    <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="Steamworks.NET" Version="2024.8.0" />
     <ProjectReference Include="..\CrowbarLauncher\CrowbarLauncher.vbproj" />
     <ProjectReference Include="..\CrowbarSteamPipe\CrowbarSteamPipe.vbproj" />

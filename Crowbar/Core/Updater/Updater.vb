@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Net
 Imports System.Text.Json
 Imports System.Xml
+Imports SevenZipExtractor
 
 Public Class Updater
 
@@ -243,27 +244,10 @@ Public Class Updater
 
 	'NOTE: This is run in a background thread.
 	Private Sub Decompress()
-		Dim sevenZrExeProcess As New Process()
-		Try
-			sevenZrExeProcess.StartInfo.UseShellExecute = False
-			'NOTE: From Microsoft website: 
-			'      On Windows Vista and earlier versions of the Windows operating system, 
-			'      the length of the arguments added to the length of the full path to the process must be less than 2080. 
-			'      On Windows 7 and later versions, the length must be less than 32699. 
-			sevenZrExeProcess.StartInfo.FileName = TheApp.SevenZrExePathFileName
-			sevenZrExeProcess.StartInfo.Arguments = "x """ + Me.theLocalFileName + """"
-#If DEBUG Then
-			sevenZrExeProcess.StartInfo.CreateNoWindow = False
-#Else
-			sevenZrExeProcess.StartInfo.CreateNoWindow = True
-#End If
-			sevenZrExeProcess.Start()
-			sevenZrExeProcess.WaitForExit()
-		Catch ex As Exception
-			Throw New System.Exception("Crowbar tried to decompress the file """ + Me.theLocalPathFileName + """ but Windows gave this message: " + ex.Message)
-		Finally
-			sevenZrExeProcess.Close()
-		End Try
+		Using compressedFile = File.OpenRead(Me.theLocalPathFileName),
+			  archiveFile = New ArchiveFile(compressedFile, format:=SevenZipFormat.SevenZip)
+			archiveFile.Extract(Me.theLocalPath)
+		End Using
 
 		Try
 			If File.Exists(Me.theLocalPathFileName) Then
