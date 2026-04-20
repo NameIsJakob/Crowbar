@@ -11,8 +11,4 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="CrowbarSteamPipe/CrowbarSteamPipe.vbproj" Id="5a3fe6b1-7d4e-42c6-a3c9-c4b118584cd5">
-    <Platform Solution="*|x64" Project="x64" />
-    <Platform Solution="*|x86" Project="x86" />
-  </Project>
 </Solution>

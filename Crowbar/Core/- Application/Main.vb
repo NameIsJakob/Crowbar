@@ -1,9 +1,18 @@
 Imports System.IO
 
 Module Main
-
 	' Entry point of application.
-	Public Function Main() As Integer
+	Public Function Main(arguments As String()) As Integer
+#If DEBUG Then
+		If Not Debugger.IsAttached Then
+			Debugger.Launch()
+		End If
+#End If
+		If arguments.FirstOrDefault() = "-pipe" Then
+			CrowbarSteamPipe.RunSteamPipe(arguments)
+			Return 0
+		End If
+
 		'' Create a job with JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE flag, so that all processes 
 		''	(e.g. HLMV called by Crowbar) associated with the job 
 		''	terminate when the last handle to the job is closed.

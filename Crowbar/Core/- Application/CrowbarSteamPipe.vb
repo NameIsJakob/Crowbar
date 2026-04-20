@@ -6,11 +6,10 @@ Imports Steamworks
 
 Public Module CrowbarSteamPipe
 
-	Public Sub Main()
+	Public Sub RunSteamPipe(arguments As String())
 		Dim pipeNameSuffix As String = ""
-		Dim commandLineArgs = Environment.GetCommandLineArgs()
-		If commandLineArgs.Count() > 1 Then
-			pipeNameSuffix = commandLineArgs(1)
+		If arguments.Length > 1 Then
+			pipeNameSuffix = arguments(1)
 		End If
 		Dim pipeClient As New NamedPipeClientStream(".", "CrowbarSteamPipe" + pipeNameSuffix, PipeDirection.InOut, PipeOptions.WriteThrough)
 

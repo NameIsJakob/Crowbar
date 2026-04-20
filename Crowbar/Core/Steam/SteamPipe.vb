@@ -35,8 +35,8 @@ Public Class SteamPipe
 		Me.theCrowbarSteamPipeProcess = New Process()
 		Try
 			Me.theCrowbarSteamPipeProcess.StartInfo.UseShellExecute = False
-			Me.theCrowbarSteamPipeProcess.StartInfo.FileName = App.CrowbarSteamPipeFileName
-			Me.theCrowbarSteamPipeProcess.StartInfo.Arguments = pipeNameSuffix
+			Me.theCrowbarSteamPipeProcess.StartInfo.FileName = Application.ExecutablePath()
+			Me.theCrowbarSteamPipeProcess.StartInfo.Arguments = "-pipe" + " " + pipeNameSuffix
 #If DEBUG Then
 			Me.theCrowbarSteamPipeProcess.StartInfo.CreateNoWindow = False
 #Else

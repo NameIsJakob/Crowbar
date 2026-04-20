@@ -183,10 +183,6 @@ Public Class App
 			Me.WriteResourceToFileIfDifferent(steam_api.ToArray(), steamAPIDLLPathFileName)
 		End Using
 
-
-		Dim crowbarSteamPipePathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.CrowbarSteamPipeFileName)
-		Me.WriteResourceToFileIfDifferent(My.Resources.CrowbarSteamPipe, crowbarSteamPipePathFileName)
-
 		Dim lzhamAPIDLLPathFileName As String = Path.Combine(Me.GetCustomDataPath(), App.theLzhamDLLFileName)
 		Me.WriteResourceToFileIfDifferent(My.Resources.lzham_x86, lzhamAPIDLLPathFileName)
 
@@ -450,7 +446,6 @@ Public Class App
 	Public SteamAppInfos As List(Of SteamAppInfoBase)
 
 	Private Const PreviewsRelativePath As String = "previews"
-	Public Const CrowbarSteamPipeFileName As String = "CrowbarSteamPipe.exe"
 	Private Const theSteamAppIDFileName As String = "steam_appid.txt"
 	'Private Const theDataFolderName As String = "Data"
 	Private Const theAppSettingsFileName As String = "Crowbar Settings.xml"
