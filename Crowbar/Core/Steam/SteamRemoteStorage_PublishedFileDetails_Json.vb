@@ -15,7 +15,7 @@ Public Class SteamRemoteStorage_PublishedFileDetails_Json
 		Public Property result As Integer
 		Public Property creator As String
 		Public Property creator_app_id As Integer
-		Public Property consumer_app_id As Integer
+		Public Property consumer_app_id As UInteger
 		Public Property filename As String
 		<JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)>
 		Public Property file_size As Integer

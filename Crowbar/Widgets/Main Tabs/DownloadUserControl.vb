@@ -1,12 +1,10 @@
 ﻿Imports System.Collections.Specialized
-Imports System.ComponentModel
 Imports System.IO
-Imports System.IO.Pipes
-Imports System.Linq
-Imports System.Net
-Imports System.Text
-Imports System.Text.Json
+Imports System.Net.Http
+Imports System.Net.Http.Json
+Imports System.Threading
 Imports System.Web
+Imports Crowbar.SteamRemoteStorage_PublishedFileDetails_Json
 
 Public Class DownloadUserControl
 
@@ -181,59 +179,6 @@ Public Class DownloadUserControl
 		ElseIf e.PropertyName = "DownloadReplaceSpacesWithUnderscoresIsChecked" Then
 			Me.UpdateExampleOutputFileNameTextBox()
 		End If
-	End Sub
-
-	Private Sub GetRequestStreamCallback(ByVal asynchronousResult As IAsyncResult)
-
-	End Sub
-
-	Private Sub GetResponseCallback(ByVal asynchronousResult As IAsyncResult)
-
-	End Sub
-
-	Private Sub WebClient_DownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressChangedEventArgs)
-		'Me.DownloadProgressBar.Text = e.BytesReceived.ToString("N0") + " / " + e.TotalBytesToReceive.ToString("N0") + " bytes   " + e.ProgressPercentage.ToString() + " %"
-		'Me.DownloadProgressBar.Value = CInt(e.BytesReceived * Me.DownloadProgressBar.Maximum / e.TotalBytesToReceive)
-		Me.UpdateProgressBar(e.BytesReceived, e.TotalBytesToReceive)
-	End Sub
-
-	Private Sub WebClient_DownloadFileCompleted(ByVal sender As Object, ByVal e As AsyncCompletedEventArgs)
-		Dim pathFileName As String = CType(e.UserState, String)
-
-		If e.Cancelled Then
-			Me.LogTextBox.AppendText("Download cancelled." + vbCrLf)
-			Me.DownloadProgressBar.Text = ""
-			Me.DownloadProgressBar.Value = 0
-
-			If File.Exists(pathFileName) Then
-				Try
-					File.Delete(pathFileName)
-				Catch ex As Exception
-					Me.LogTextBox.AppendText("WARNING: Problem deleting incomplete downloaded file." + vbCrLf)
-				End Try
-			End If
-		Else
-			If File.Exists(pathFileName) Then
-				Me.LogTextBox.AppendText("Download complete." + vbCrLf + "Downloaded file: """ + pathFileName + """" + vbCrLf)
-				Me.DownloadedItemTextBox.Text = pathFileName
-			Else
-				Me.LogTextBox.AppendText("Download failed." + vbCrLf)
-			End If
-		End If
-
-		RemoveHandler Me.theWebClient.DownloadProgressChanged, AddressOf Me.WebClient_DownloadProgressChanged
-		RemoveHandler Me.theWebClient.DownloadFileCompleted, AddressOf Me.WebClient_DownloadFileCompleted
-		Me.theWebClient = Nothing
-
-		'Me.DownloadButton.Enabled = True
-		'Me.CancelDownloadButton.Enabled = False
-
-		If Not e.Cancelled AndAlso File.Exists(pathFileName) Then
-			Me.ProcessFolderOrFileAfterDownload(pathFileName)
-		End If
-
-		Me.DownloadButton.Enabled = True
-		Me.CancelDownloadButton.Enabled = False
 	End Sub
 
 	Private Sub DownloadItem_ProgressChanged(ByVal sender As System.Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs)
@@ -465,7 +410,7 @@ Public Class DownloadUserControl
 		End If
 	End Sub
 
-	Private Sub DownloadFromLink()
+	Private Async Sub DownloadFromLink()
 		Me.LogTextBox.Text = ""
 		Me.DownloadProgressBar.Text = ""
 		Me.DownloadProgressBar.Value = 0
@@ -474,48 +419,52 @@ Public Class DownloadUserControl
 		Me.DownloadButton.Enabled = False
 		Me.CancelDownloadButton.Enabled = True
 
-		Dim itemLink As String = ""
 		Dim itemID As String = Me.GetItemID()
-		Dim appID As UInteger = 0
 		If itemID = "0" Then
+			Me.DownloadButton.Enabled = True
+			Me.CancelDownloadButton.Enabled = False
 			Me.LogTextBox.AppendText("ERROR: Item ID is invalid." + vbCrLf)
-			Exit Sub
-		Else
-			'Me.LogTextBox.AppendText("Getting item content download link." + vbCrLf)
-			Me.LogTextBox.AppendText("Getting item content download link...")
-			Application.DoEvents()
-			Me.Timer1.Interval = 1000
-			Me.Timer1.Start()
-			itemLink = Me.GetDownloadLink(itemID, appID)
-			Me.Timer1.Stop()
+			Return
 		End If
-		If itemLink <> "" Then
+		Me.theCancellation = New CancellationTokenSource()
+		Dim webClient As New HttpClient()
+		Me.LogTextBox.AppendText("Getting item content download link..." + vbCrLf)
+		Dim downloadDetails As SteamRemoteStorage_PublishedFileDetails_ItemDetail
+		Try
+			downloadDetails = Await Me.GetPublishedtemDetails(itemID)
+		Catch canceled As OperationCanceledException
+			Me.DownloadButton.Enabled = True
+			Me.CancelDownloadButton.Enabled = False
+			Me.LogTextBox.AppendText("Cancelled getting item content download link." + vbCrLf)
+			Return
+		Catch ex As Exception
+			Me.DownloadButton.Enabled = True
+			Me.CancelDownloadButton.Enabled = False
+			Me.LogTextBox.AppendText("Failed getting item content download link: " + ex.ToString() + vbCrLf)
+			Return
+		End Try
+
+
+		Dim appID = downloadDetails.consumer_app_id
+		Dim steamAppID As New Steamworks.AppId_t(appID)
+		Me.theSteamAppInfo = TheApp.SteamAppInfos.First(Function(info) info.ID = steamAppID)
+		If Me.theSteamAppInfo Is Nothing Then
+			'NOTE: Value was not found, so unable to download.
+			appID = 0
+		End If
+
+		If downloadDetails.file_url <> "" Then
 			Me.LogTextBox.AppendText("Item content download link found. Downloading file via web." + vbCrLf)
-			Me.DownloadViaWeb(itemLink, Me.theItemContentPathFileName)
-		Else
-			'Me.LogTextBox.AppendText("Item content download link not found. Probably an item that uses newer Steam API or a Friends-only item not downloadable via web." + vbCrLf)
-			Me.LogTextBox.AppendText("Item content download link not found. Downloading file via Steam." + vbCrLf)
-
-			Dim outputPath As String
-			outputPath = Me.GetOutputPath()
-
-			'Dim outputFolder As String
-			'outputFolder = Me.GetOutputFileName(outputInfo.ItemTitle, outputInfo.PublishedItemID, outputInfo.ContentFolderOrFileName, outputInfo.ItemUpdated_Text)
-
-			Dim targetPath As String
-			'targetPath = Path.Combine(outputPath, outputFolder)
-			'targetPath = FileManager.GetTestedPath(targetPath)
-			'------
-			targetPath = outputPath
-
-			Me.DownloadViaSteam(appID, itemID, targetPath)
+			Me.DownloadViaWeb(downloadDetails)
+			Return
 		End If
+
+		Me.LogTextBox.AppendText("Item content download link not found. Downloading file via Steam." + vbCrLf)
+		Me.DownloadViaSteam(appID, itemID, Me.GetOutputPath())
 	End Sub
 
 	Private Sub CancelDownload()
-		If Me.theWebClient IsNot Nothing Then
-			Me.theWebClient.CancelAsync()
-		End If
+		Me.theCancellation.Cancel()
 	End Sub
 
 	Private Function GetItemID() As String
@@ -564,99 +513,20 @@ Public Class DownloadUserControl
 		Return itemID
 	End Function
 
-	Private Function GetDownloadLink(ByVal itemID As String, ByRef appID As UInteger) As String
-		Dim itemLink As String = ""
-		Me.theItemContentPathFileName = ""
-
-		'Dim downloadHasStarted As Boolean = SteamUGC.DownloadItem(371699674, True)
-		'If downloadHasStarted Then
-		'    Me.TextBox1.Text = "Download started."
-		'    'TODO: Set the handler.
-		'Else
-		'    Me.TextBox1.Text = "ERROR: Download did not start."
-		'End If
-		'======
-		Dim request As HttpWebRequest = CType(WebRequest.Create("http://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v0001/"), HttpWebRequest)
-		request.Method = "POST"
-		request.ContentType = "application/x-www-form-urlencoded"
-
-		Dim byteData() As Byte
-		Dim data As String
-		'data = "itemcount=1&publishedfileids[0]=" + id + "&format=json"
-		data = "itemcount=1&publishedfileids[0]=" + itemID
-		byteData = UTF8Encoding.UTF8.GetBytes(data.ToString())
-		request.ContentLength = byteData.Length
-		'request.Timeout = 5000
-
-		'TODO: request.BeginGetRequestStream(AddressOf GetRequestStreamCallback, request)
-		'      https://docs.microsoft.com/en-us/dotnet/api/system.net.httpwebrequest.begingetrequeststream?view=netframework-4.0
-		Dim postStream As Stream = Nothing
-		Try
-			postStream = request.GetRequestStream()
-			postStream.Write(byteData, 0, byteData.Length)
-		Catch ex As Exception
-			Dim debug As Integer = 4242
-		Finally
-			If postStream IsNot Nothing Then
-				postStream.Close()
-			End If
-		End Try
-
-		Dim response As HttpWebResponse = Nothing
-		Dim dataStream As Stream
-		Dim reader As StreamReader = Nothing
-		Try
-			response = CType(request.GetResponse(), HttpWebResponse)
-			dataStream = response.GetResponseStream()
-			reader = New StreamReader(dataStream)
-			Dim responseFromServer As String = reader.ReadToEnd()
-
-			Dim root As SteamRemoteStorage_PublishedFileDetails_Json = JsonSerializer.Deserialize(Of SteamRemoteStorage_PublishedFileDetails_Json)(responseFromServer)
-			Dim file_url As String = root.response.publishedfiledetails(0).file_url
-			If file_url IsNot Nothing AndAlso file_url <> "" Then
-				itemLink = file_url
-
-				Me.theItemTitle = root.response.publishedfiledetails(0).title
-				Dim fileName As String = root.response.publishedfiledetails(0).filename
-				Me.theItemContentPathFileName = fileName
-				Me.theItemIdText = root.response.publishedfiledetails(0).publishedfileid
-				Me.theItemTimeUpdatedText = root.response.publishedfiledetails(0).time_updated.ToString()
-			End If
-
-			appID = CUInt(root.response.publishedfiledetails(0).consumer_app_id)
-			Me.theAppIdText = appID.ToString()
-			Me.theSteamAppInfo = Nothing
-			Try
-				If TheApp.SteamAppInfos.Count > 0 Then
-					'NOTE: Use this temp var because appID as a ByRef var can not be used in a lambda expression used in next line.
-					Dim steamAppID As New Steamworks.AppId_t(appID)
-					Me.theSteamAppInfo = TheApp.SteamAppInfos.First(Function(info) info.ID = steamAppID)
-				End If
-			Catch ex As Exception
-				Dim debug As Integer = 4242
-			End Try
-			If Me.theSteamAppInfo Is Nothing Then
-				'NOTE: Value was not found, so unable to download.
-				appID = 0
-			End If
-		Catch ex As Exception
-			Dim debug As Integer = 4242
-		Finally
-			If reader IsNot Nothing Then
-				reader.Close()
-			End If
-			If response IsNot Nothing Then
-				response.Close()
-			End If
-
-			Me.LogTextBox.AppendText(vbCrLf)
-		End Try
-
-		Return itemLink
+	Private Async Function GetPublishedtemDetails(itemID As String) As Task(Of SteamRemoteStorage_PublishedFileDetails_ItemDetail)
+		Dim client As New HttpClient()
+		Dim requestArguments = {
+			KeyValuePair.Create("itemcount", "1"),
+			KeyValuePair.Create("publishedfileids[0]", itemID)
+		}
+		Dim response = Await client.PostAsync("https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/", New FormUrlEncodedContent(requestArguments), Me.theCancellation.Token)
+		response.EnsureSuccessStatusCode()
+		Dim content = Await response.Content.ReadFromJsonAsync(Of SteamRemoteStorage_PublishedFileDetails_Json)(Me.theCancellation.Token)
+		Return content.response.publishedfiledetails(0)
 	End Function
 
-	Private Sub DownloadViaWeb(ByVal link As String, ByVal givenFileName As String)
-		Dim uri As Uri = New Uri(link)
+	Private Async Sub DownloadViaWeb(details As SteamRemoteStorage_PublishedFileDetails_ItemDetail)
+		Dim uri As Uri = New Uri(details.file_url)
 
 		Dim outputPath As String
 		outputPath = Me.GetOutputPath()
@@ -668,7 +538,7 @@ Public Class DownloadUserControl
 		End Try
 
 		Dim outputFileName As String
-		outputFileName = Me.GetOutputFileName(Me.theItemTitle, Me.theItemIdText, givenFileName, Me.theItemTimeUpdatedText)
+		outputFileName = Me.GetOutputFileName(details.title, details.publishedfileid, details.filename, details.time_updated.ToString())
 
 		Dim outputPathFileName As String
 		outputPathFileName = Path.Combine(outputPath, outputFileName)
@@ -676,13 +546,59 @@ Public Class DownloadUserControl
 
 		Me.LogTextBox.AppendText("Downloading workshop item as: """ + outputPathFileName + """" + vbCrLf)
 
-		'Me.DownloadButton.Enabled = False
-		'Me.CancelDownloadButton.Enabled = True
+		Dim client As New HttpClient()
+		Try
+			Dim response = Await client.GetAsync(uri, Me.theCancellation.Token)
+			response.EnsureSuccessStatusCode()
+			Dim responseStream = Await response.Content.ReadAsStreamAsync(Me.theCancellation.Token)
+			Dim byteReadCount = 0
+			Using outputFile = File.OpenWrite(outputPathFileName)
+				Dim buffer(UShort.MaxValue - 1) As Byte
+				Do
+					Dim bytesRead = Await responseStream.ReadAsync(buffer, 0, buffer.Length, Me.theCancellation.Token)
+					byteReadCount += bytesRead
+					Me.UpdateProgressBar(byteReadCount, response.Content.Headers.ContentLength.Value)
+					If bytesRead = 0 Then Exit Do
+					Await outputFile.WriteAsync(buffer, 0, bytesRead, Me.theCancellation.Token)
+				Loop
+			End Using
+		Catch canceled As OperationCanceledException
+			Me.LogTextBox.AppendText("Download cancelled." + vbCrLf)
+			Me.DownloadProgressBar.Text = ""
+			Me.DownloadProgressBar.Value = 0
+			Me.DownloadButton.Enabled = True
+			Me.CancelDownloadButton.Enabled = False
+			If File.Exists(outputPathFileName) Then
+				Try
+					File.Delete(outputPathFileName)
+				Catch ex As Exception
+					Me.LogTextBox.AppendText("WARNING: Problem deleting incomplete downloaded file." + vbCrLf)
+				End Try
+			End If
+			Return
+		Catch e As Exception
+			Me.LogTextBox.AppendText("Download failed: " + e.ToString() + vbCrLf)
+			Me.DownloadProgressBar.Text = ""
+			Me.DownloadProgressBar.Value = 0
+			Me.DownloadButton.Enabled = True
+			Me.CancelDownloadButton.Enabled = False
+			If File.Exists(outputPathFileName) Then
+				Try
+					File.Delete(outputPathFileName)
+				Catch ex As Exception
+					Me.LogTextBox.AppendText("WARNING: Problem deleting incomplete downloaded file." + vbCrLf)
+				End Try
+			End If
+			Return
+		End Try
 
-		Me.theWebClient = New WebClient()
-		AddHandler Me.theWebClient.DownloadProgressChanged, AddressOf WebClient_DownloadProgressChanged
-		AddHandler Me.theWebClient.DownloadFileCompleted, AddressOf WebClient_DownloadFileCompleted
-		Me.theWebClient.DownloadFileAsync(uri, outputPathFileName, outputPathFileName)
+		Me.LogTextBox.AppendText("Download complete." + vbCrLf + "Downloaded file: """ + outputPathFileName + """" + vbCrLf)
+		Me.DownloadedItemTextBox.Text = outputPathFileName
+
+		Me.ProcessFolderOrFileAfterDownload(outputPathFileName)
+
+		Me.DownloadButton.Enabled = True
+		Me.CancelDownloadButton.Enabled = False
 	End Sub
 
 	Private Sub DownloadViaSteam(ByVal appID As UInteger, ByVal itemID As String, ByVal targetPath As String)
@@ -835,7 +751,7 @@ Public Class DownloadUserControl
 
 #Region "Data"
 
-	Private theWebClient As WebClient
+	Private theCancellation As CancellationTokenSource
 	Private theProcessAfterDownloadWorker As BackgroundWorkerEx
 	Private theAppIdText As String
 	Private theSteamAppInfo As SteamAppInfoBase
@@ -843,11 +759,6 @@ Public Class DownloadUserControl
 	Private theBackgroundSteamPipe As BackgroundSteamPipe
 
 	Private theDownloadBytesReceived As Long
-
-	Private theItemTitle As String
-	Private theItemContentPathFileName As String
-	Private theItemIdText As String
-	Private theItemTimeUpdatedText As String
 
 #End Region
 
