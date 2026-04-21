@@ -447,11 +447,11 @@ Public Class DownloadUserControl
 
 		Dim appID = downloadDetails.consumer_app_id
 		Dim steamAppID As New Steamworks.AppId_t(appID)
-		Me.theSteamAppInfo = TheApp.SteamAppInfos.First(Function(info) info.ID = steamAppID)
-		If Me.theSteamAppInfo Is Nothing Then
-			'NOTE: Value was not found, so unable to download.
+		Try
+			Me.theSteamAppInfo = TheApp.SteamAppInfos.First(Function(info) info.ID = steamAppID)
+		Catch
 			appID = 0
-		End If
+		End Try
 
 		If downloadDetails.file_url <> "" Then
 			Me.LogTextBox.AppendText("Item content download link found. Downloading file via web." + vbCrLf)
@@ -559,7 +559,7 @@ Public Class DownloadUserControl
 					byteReadCount += bytesRead
 					Me.UpdateProgressBar(byteReadCount, response.Content.Headers.ContentLength.Value)
 					If bytesRead = 0 Then Exit Do
-					Await outputFile.WriteAsync(buffer, 0, bytesRead, Me.theCancellation.Token)
+					Await outputFile.WriteAsync(buffer.AsMemory(0, bytesRead), Me.theCancellation.Token)
 				Loop
 			End Using
 		Catch canceled As OperationCanceledException
