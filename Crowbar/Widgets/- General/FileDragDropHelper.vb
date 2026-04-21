@@ -63,7 +63,7 @@ Public Class FileDragDropHelper
 			Dim debug As Integer = 4242
 		End If
 
-		result = MyBase.GetData(format)
+		result = MyBase.TryGetData(format)
 
 		Return result
 	End Function

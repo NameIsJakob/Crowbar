@@ -340,13 +340,9 @@ Public Class FileManager
 	End Function
 
 	Public Shared Sub CreatePath(ByVal path As String)
-		Try
-			If Not Directory.Exists(path) Then
-				Directory.CreateDirectory(path)
-			End If
-		Catch ex As Exception
-			Throw ex
-		End Try
+		If Not Directory.Exists(path) Then
+			Directory.CreateDirectory(path)
+		End If
 	End Sub
 
 	Public Shared Function PathExistsAfterTryToCreate(ByVal aPath As String) As Boolean

@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Linq
-Imports System.Web.Script.Serialization
 
 Public Class Packer
 	Inherits BackgroundWorker

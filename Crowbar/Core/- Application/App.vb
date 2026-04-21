@@ -357,7 +357,7 @@ Public Class App
 			Dim isDifferentOrNotExist As Boolean = True
 			If File.Exists(pathFileName) Then
 				Dim resourceHash() As Byte
-				Dim sha As New Security.Cryptography.SHA512Managed()
+				Dim sha = Security.Cryptography.SHA512.Create()
 				resourceHash = sha.ComputeHash(dataResource)
 
 				Dim fileStream As FileStream = File.Open(pathFileName, FileMode.Open)

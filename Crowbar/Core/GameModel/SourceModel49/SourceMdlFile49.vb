@@ -2071,7 +2071,7 @@ Public Class SourceMdlFile49
 		End If
 	End Sub
 
-	Protected Function ReadLocalHierarchies(ByVal animInputFileStreamPosition As Long, ByVal anAnimationDesc As SourceMdlAnimationDesc49) As Long
+	Protected Sub ReadLocalHierarchies(ByVal animInputFileStreamPosition As Long, ByVal anAnimationDesc As SourceMdlAnimationDesc49)
 		If anAnimationDesc.localHierarchyCount > 0 Then
 			Dim localHieararchyInputFileStreamPosition As Long
 			Dim fileOffsetStart As Long
@@ -2104,10 +2104,8 @@ Public Class SourceMdlFile49
 			Me.theMdlFileData.theFileSeekLog.Add(fileOffsetStart, fileOffsetEnd, "anAnimationDesc.theLocalHierarchies " + anAnimationDesc.theLocalHierarchies.Count.ToString())
 
 			Me.theMdlFileData.theFileSeekLog.LogToEndAndAlignToNextStart(Me.theInputFileReader, fileOffsetEnd, 4, "anAnimationDesc.theLocalHierarchies alignment")
-
-			Return Me.theInputFileReader.BaseStream.Position - 1
 		End If
-	End Function
+	End Sub
 
 	Public Sub ReadSequenceDescs()
 		If Me.theMdlFileData.localSequenceCount > 0 Then

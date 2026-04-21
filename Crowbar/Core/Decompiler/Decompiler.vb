@@ -245,6 +245,8 @@ Public Class Decompiler
 				Return status
 			End If
 		Next
+
+		Return status
 	End Function
 
 	Private Function DecompileModelsInFolder(ByVal modelsPathName As String) As AppEnums.StatusMessage
@@ -261,6 +263,8 @@ Public Class Decompiler
 				Continue For
 			End If
 		Next
+
+		Return status
 	End Function
 
 	Private Function DecompileOneModel(ByVal mdlPathFileName As String) As AppEnums.StatusMessage

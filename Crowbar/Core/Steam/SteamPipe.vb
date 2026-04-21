@@ -238,7 +238,7 @@ Public Class SteamPipe
 			If byteCount > 0 Then
 				Dim data As Byte() = New Byte(byteCount) {}
 				Try
-					Me.theStreamReader.BaseStream.Read(data, 0, data.Length)
+					Me.theStreamReader.BaseStream.ReadExactly(data)
 
 					If Me.theBackgroundWorker.CancellationPending Then
 						Return "cancelled"

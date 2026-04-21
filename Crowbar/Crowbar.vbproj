@@ -10,7 +10,6 @@
     <Platforms>x64;x86</Platforms>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <PublishSingleFile>True</PublishSingleFile>
-    <NoWarn>WFO1000</NoWarn>
     <OptionStrict>On</OptionStrict>
   </PropertyGroup>
 
@@ -31,7 +30,7 @@
     <DefineDebug>True</DefineDebug>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <DebugType>Full</DebugType>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
@@ -39,7 +38,7 @@
     <DefineDebug>True</DefineDebug>
     <RemoveIntegerChecks>False</RemoveIntegerChecks>
     <DebugType>Full</DebugType>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -47,7 +46,7 @@
     <DefineDebug>False</DefineDebug>
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <DebugType>None</DebugType>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
@@ -55,7 +54,7 @@
     <DefineDebug>False</DefineDebug>
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <DebugType>None</DebugType>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
