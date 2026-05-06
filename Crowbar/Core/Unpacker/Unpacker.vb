@@ -56,6 +56,7 @@ Public Class Unpacker
 
 #Region "Properties"
 
+	<DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
 	Public Property UnpackModes() As BindingListEx(Of String)
 		Get
 			Return Me.theUnpackModes

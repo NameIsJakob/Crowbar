@@ -53,6 +53,7 @@ Public Class GroupBoxEx
 	'	End Set
 	'End Property
 
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Property IsReadOnly() As Boolean
 		Get
 			Return Me.theControlIsReadOnly
@@ -103,6 +104,7 @@ Public Class GroupBoxEx
 	'	End Set
 	'End Property
 
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Property SelectedValue() As System.Enum
 		Get
 			'If Me.theDataSource Is Nothing Then

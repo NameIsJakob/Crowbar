@@ -1858,7 +1858,9 @@ Public Class PublishUserControl
 #Region "Data"
 
 	Protected WithEvents ItemContextMenuStrip As System.Windows.Forms.ContextMenuStrip
-	Public WithEvents UseInDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+#Disable Warning WFO1000 ' Missing code serialization configuration for property content
+	Friend WithEvents UseInDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+#Enable Warning WFO1000 ' Missing code serialization configuration for property content
 
 	'Protected WithEvents ItemsDataGridViewContextMenuStrip As System.Windows.Forms.ContextMenuStrip
 	'Public WithEvents ItemsDataGridViewUseInDownloadToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

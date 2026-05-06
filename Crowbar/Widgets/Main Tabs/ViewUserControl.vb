@@ -50,7 +50,7 @@ Public Class ViewUserControl
 #End Region
 
 #Region "Properties"
-
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Property ViewerType() As ViewerType
 		Get
 			Return Me.theViewerType

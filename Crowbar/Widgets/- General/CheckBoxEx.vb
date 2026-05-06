@@ -6,6 +6,7 @@
 
 	End Sub
 
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Property IsReadOnly() As Boolean
 		Get
 			Return Me.theControlIsReadOnly

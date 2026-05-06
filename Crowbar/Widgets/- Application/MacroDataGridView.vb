@@ -517,13 +517,17 @@ Public Class MacroDataGridView
 
 	Private components As System.ComponentModel.IContainer
 	Protected WithEvents DataGridViewContextMenuStrip As System.Windows.Forms.ContextMenuStrip
+#Disable Warning WFO1000 ' Missing code serialization configuration for property content
 	Friend WithEvents SetMacroInSelectedGameSetupToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Friend WithEvents ClearMacroInSelectedGameSetupToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Friend WithEvents ChangeToThisMacroInSelectedGameSetupToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+#Enable Warning WFO1000 ' Missing code serialization configuration for property content
 	Protected MacroMenuToolStripSeparator0 As System.Windows.Forms.ToolStripSeparator
+#Disable Warning WFO1000 ' Missing code serialization configuration for property content
 	Friend WithEvents SetMacroInAllGameSetupsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Friend WithEvents ClearMacroInAllGameSetupsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Friend WithEvents ChangeToThisMacroInAllGameSetupsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+#Enable Warning WFO1000 ' Missing code serialization configuration for property content
 	Protected MacroMenuToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
 	'Protected WithEvents InsertToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	'Protected WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

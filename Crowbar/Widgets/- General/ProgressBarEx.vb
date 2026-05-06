@@ -28,6 +28,7 @@ Public Class ProgressBarEx
 		End Set
 	End Property
 
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Overloads Property [Value]() As Integer
 		Get
 			Return MyBase.Value

@@ -36,6 +36,7 @@ Public Class RichTextBoxEx
 	<Browsable(True)>
 	<Category("Appearance")>
 	<Description("Sets the text of the cue (dimmed text that only shows when Text property is empty).")>
+	<DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
 	Public Property CueBannerText As String
 		Get
 			Return Me.theCueBannerText

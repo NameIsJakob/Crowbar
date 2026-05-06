@@ -17,7 +17,7 @@ Public Class DataGridViewEx
 #End Region
 
 #Region "Properties"
-
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Overloads Property DataSource() As Object
 		Get
 			Return MyBase.DataSource
@@ -39,6 +39,7 @@ Public Class DataGridViewEx
 		End Get
 	End Property
 
+	<ComponentModel.DesignerSerializationVisibility(ComponentModel.DesignerSerializationVisibility.Content)>
 	Public Overloads Property [ReadOnly]() As Boolean
 		Get
 			Return MyBase.ReadOnly

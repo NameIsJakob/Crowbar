@@ -37,6 +37,7 @@ Public Class GarrysModTagsUserControl
 		Next
 	End Sub
 
+	<DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
 	Public Property Orientation() As OrientationType
 		Get
 			Return Me.theOrientation

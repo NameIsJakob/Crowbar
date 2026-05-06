@@ -40,6 +40,7 @@ Public Class BackgroundWorkerEx
 
 #Region "Private Properties"
 
+	<DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
 	Public Property DoWorkHandler() As DoWorkEventHandler
 		Get
 			Return Me.theDoWorkHandler
@@ -50,6 +51,7 @@ Public Class BackgroundWorkerEx
 		End Set
 	End Property
 
+	<DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
 	Public Property ProgressChangedHandler() As ProgressChangedEventHandler
 		Get
 			Return Me.theProgressChangedHandler
@@ -60,6 +62,7 @@ Public Class BackgroundWorkerEx
 		End Set
 	End Property
 
+	<DesignerSerializationVisibility(DesignerSerializationVisibility.Content)>
 	Public Property RunWorkerCompletedHandler() As RunWorkerCompletedEventHandler
 		Get
 			Return Me.theRunWorkerCompletedHandler
