@@ -66,6 +66,8 @@ Public Class UpdateUserControl
 		RaiseEvent UpdateAvailable(Me, New UpdateAvailableEventArgs(updateIsAvailable))
 	End Sub
 
+	Public Delegate Sub DownloadProgressEventHandler(ByVal sender As Object, ByVal e As DownloadProgressEventArgs)
+
 #End Region
 
 #Region "Widget Event Handlers"
@@ -185,7 +187,7 @@ Public Class UpdateUserControl
 		Me.CancelCheckButton.Enabled = False
 	End Sub
 
-	Private Sub Download_DownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressChangedEventArgs)
+	Private Sub Download_DownloadProgressChanged(ByVal sender As Object, ByVal e As DownloadProgressEventArgs)
 		Me.UpdateProgressBar(Me.theCurrentProgressBar, e.BytesReceived, e.TotalBytesToReceive)
 	End Sub
 
@@ -211,11 +213,6 @@ Public Class UpdateUserControl
 				Me.theCurrentProgressBar.Text = "Download failed."
 			End If
 		End If
-
-		Dim client As WebClient = CType(sender, WebClient)
-		RemoveHandler client.DownloadProgressChanged, AddressOf Me.Download_DownloadProgressChanged
-		RemoveHandler client.DownloadFileCompleted, AddressOf Me.Download_DownloadFileCompleted
-		client = Nothing
 
 		Me.UpdateCommandWidgets(False)
 		Me.CancelDownloadButton.Enabled = False
@@ -379,6 +376,33 @@ Public Class UpdateUserControl
 		End Property
 
 		Private theUpdateIsAvailable As Boolean
+
+	End Class
+
+	Public Class DownloadProgressEventArgs
+		Inherits System.EventArgs
+
+		Public Sub New(bytesReceived As Long, totalBytesToReceive As Long)
+			MyBase.New()
+
+			Me.theBytesReceived = bytesReceived
+			Me.theTotalBytesToReceive = totalBytesToReceive
+		End Sub
+
+		Public ReadOnly Property BytesReceived As Long
+			Get
+				Return Me.theBytesReceived
+			End Get
+		End Property
+
+		Public ReadOnly Property TotalBytesToReceive As Long
+			Get
+				Return Me.theTotalBytesToReceive
+			End Get
+		End Property
+
+		Private theBytesReceived As Long
+		Private theTotalBytesToReceive As Long
 
 	End Class
 
