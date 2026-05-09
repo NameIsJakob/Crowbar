@@ -8,7 +8,7 @@ Imports System.Text.Json
 Imports System.Threading
 Imports System.Xml
 Imports Crowbar.UpdateUserControl
-Imports SevenZipExtractor
+Imports SharpCompress.Archives
 
 Public Class Updater
 
@@ -224,8 +224,8 @@ Public Class Updater
     'NOTE: This is run in a background thread.
     Private Sub Decompress()
         Using compressedFile = File.OpenRead(Me.theLocalPathFileName),
-              archiveFile = New ArchiveFile(compressedFile, format:=SevenZipFormat.SevenZip)
-            archiveFile.Extract(Me.theLocalPath)
+              archiveFile = ArchiveFactory.OpenArchive(compressedFile)
+            archiveFile.WriteToDirectory(Me.theLocalPath)
         End Using
 
         Try
